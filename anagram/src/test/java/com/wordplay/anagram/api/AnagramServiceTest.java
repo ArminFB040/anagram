@@ -76,7 +76,7 @@ class AnagramServiceTest {
     @Test
     void testFindAllAnagramsWithSpecialCharacters() {
         List<String> candidates = Arrays.asList("moon starer!", "Room dirty", "car race", "Dormitory");
-        List<String> expected = Arrays.asList("moon starer!", "Dormitory");
+        List<String> expected = Arrays.asList("moon starer!");
         List<String> result = anagramService.findAllAnagrams("Astronomer", candidates);
         assertEquals(expected, result);
     }
