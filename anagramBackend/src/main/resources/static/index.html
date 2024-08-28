@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagram Checker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .container { width: 80%; max-width: 600px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        h1 { text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, button { width: 100%; padding: 10px; margin: 5px 0; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Anagram Checker</h1>
+    <div class="form-group">
+        <label for="text1">Enter first text:</label>
+        <input type="text" id="text1">
+    </div>
+    <div class="form-group">
+        <label for="text2">Enter second text:</label>
+        <input type="text" id="text2">
+    </div>
+    <button onclick="checkAnagrams()">Check Anagrams</button>
+    <div id="result"></div>
+
+    <h2>Find All Anagrams</h2>
+    <div class="form-group">
+        <label for="text">Enter text:</label>
+        <input type="text" id="text">
+    </div>
+    <div class="form-group">
+        <label for="candidates">Enter candidate words (comma-separated):</label>
+        <input type="text" id="candidates">
+    </div>
+    <button onclick="findAnagrams()">Find Anagrams</button>
+    <div id="anagram-results"></div>
+</div>
+
+<script>
+    async function checkAnagrams() {
+        const text1 = encodeURIComponent(document.getElementById('text1').value);
+        const text2 = encodeURIComponent(document.getElementById('text2').value);
+
+        try {
+            const response = await fetch(`/api/anagram/check?text1=${text1}&text2=${text2}`, {
+                method: 'POST'
+            });
+
+            const isAnagram = await response.json();
+            document.getElementById('result').innerText = isAnagram ? 'The texts are anagrams!' : 'The texts are not anagrams.';
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').innerText = 'An error occurred.';
+        }
+    }
+
+    async function findAnagrams() {
+        const text = encodeURIComponent(document.getElementById('text').value);
+        const candidates = document.getElementById('candidates').value.split(',').map(candidate => candidate.trim());
+
+        try {
+            const response = await fetch(`/api/anagram/findAll?text=${text}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(candidates)
+            });
+
+            const anagrams = await response.json();
+            document.getElementById('anagram-results').innerText = anagrams.length ? `Anagrams found: ${anagrams.join(', ')}` : 'No anagrams found.';
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('anagram-results').innerText = 'An error occurred.';
+        }
+    }
+
+</script>
+</body>
+</html>
