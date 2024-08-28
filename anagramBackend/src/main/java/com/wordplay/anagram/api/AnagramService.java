@@ -6,35 +6,49 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Service class for handling anagram-related operations.
+ */
 @Service
 public class AnagramService {
 
-    // Überprüft, ob zwei Strings Anagramme sind
+    /**
+     * Checks if two strings are anagrams of each other.
+     *
+     * @param text1 The first string to compare.
+     * @param text2 The second string to compare.
+     * @return true if the two strings are anagrams, false otherwise.
+     */
     public boolean areAnagrams(String text1, String text2) {
-        // Null- oder leere Strings abfangen
+        // Handle null or empty strings
         if (text1 == null || text2 == null || text1.isEmpty() || text2.isEmpty()) {
             return false;
         }
 
-        // Strings normalisieren und sortieren
+        // Normalize and sort the strings before comparison
         return sortString(normalizeText(text1)).equals(sortString(normalizeText(text2)));
     }
 
-    // Findet alle Anagramme eines gegebenen Strings in einer Liste von Strings
+    /**
+     * Finds all anagrams of a given string from a list of candidate strings.
+     *
+     * @param text The base string to find anagrams for.
+     * @param texts The list of candidate strings.
+     * @return A list of strings from the candidates that are anagrams of the base string.
+     */
     public List<String> findAllAnagrams(String text, List<String> texts) {
         List<String> anagrams = new ArrayList<>();
 
-        // Null- oder leere Eingabe abfangen
+        // Handle null or empty input
         if (text == null || text.isEmpty() || texts == null || texts.isEmpty()) {
             return anagrams;
         }
 
-        // Den Zielstring normalisieren und sortieren
+        // Normalize and sort the base string
         String sortedText = sortString(normalizeText(text));
 
-        // Überprüfen und Anagramme sammeln
+        // Check each candidate string and collect the anagrams
         for (String t : texts) {
             if (t != null && !t.isEmpty() && sortedText.equals(sortString(normalizeText(t)))) {
                 anagrams.add(t);
@@ -44,14 +58,28 @@ public class AnagramService {
         return anagrams;
     }
 
-    // Normalisiert den Text, entfernt nicht alphabetische Zeichen und konvertiert zu Kleinbuchstaben
+    /**
+     * Normalizes a text by removing non-alphabetic characters, converting to lowercase,
+     * and removing diacritical marks.
+     *
+     * @param text The text to normalize.
+     * @return The normalized text.
+     */
     private String normalizeText(String text) {
-        text = text.toLowerCase().replaceAll("[^a-z]", ""); // Nur alphabetische Zeichen beibehalten
-        text = Normalizer.normalize(text, Normalizer.Form.NFD); // Normalisieren (z.B. ä -> a + ¨)
-        return text.replaceAll("[\\p{InCombiningDiacriticalMarks}]", ""); // Diakritische Zeichen entfernen
+        // Convert text to lowercase and remove non-alphabetic characters
+        text = text.toLowerCase().replaceAll("[^a-z]", "");
+
+        // Normalize the text to remove diacritical marks
+        text = Normalizer.normalize(text, Normalizer.Form.NFD);
+        return text.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
     }
 
-    // Sortiert die Zeichen eines Strings
+    /**
+     * Sorts the characters in a string.
+     *
+     * @param text The text to sort.
+     * @return A new string with characters sorted in ascending order.
+     */
     private String sortString(String text) {
         char[] chars = text.toCharArray();
         Arrays.sort(chars);

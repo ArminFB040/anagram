@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anagram Checker</title>
     <style>
+        /* Basic styling for the page */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
         .container { width: 80%; max-width: 600px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
         h1 { text-align: center; }
@@ -13,47 +14,57 @@
         input, button { width: 100%; padding: 10px; margin: 5px 0; }
         button { background-color: #007bff; color: white; border: none; cursor: pointer; }
         button:hover { background-color: #0056b3; }
-        #result { margin-top: 20px; }
+        #result, #anagram-results { margin-top: 20px; }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Anagram Checker</h1>
+
+    <!-- Form to check if two strings are anagrams -->
     <div class="form-group">
         <label for="text1">Enter first text:</label>
-        <input type="text" id="text1">
+        <input type="text" id="text1" placeholder="Enter the first text">
     </div>
     <div class="form-group">
         <label for="text2">Enter second text:</label>
-        <input type="text" id="text2">
+        <input type="text" id="text2" placeholder="Enter the second text">
     </div>
     <button onclick="checkAnagrams()">Check Anagrams</button>
-    <div id="result"></div>
+    <div id="result"></div> <!-- Results of the anagram check will be displayed here -->
 
+    <!-- Form to find all anagrams from a list of candidates -->
     <h2>Find All Anagrams</h2>
     <div class="form-group">
         <label for="text">Enter text:</label>
-        <input type="text" id="text">
+        <input type="text" id="text" placeholder="Enter the base text">
     </div>
     <div class="form-group">
         <label for="candidates">Enter candidate words (comma-separated):</label>
-        <input type="text" id="candidates">
+        <input type="text" id="candidates" placeholder="e.g., enlist, google, inlets, banana, silent">
     </div>
     <button onclick="findAnagrams()">Find Anagrams</button>
-    <div id="anagram-results"></div>
+    <div id="anagram-results"></div> <!-- Results of the anagram search will be displayed here -->
 </div>
 
 <script>
+    /**
+     * Function to check if the two input texts are anagrams.
+     * Makes a POST request to the /api/anagram/check endpoint.
+     */
     async function checkAnagrams() {
         const text1 = encodeURIComponent(document.getElementById('text1').value);
         const text2 = encodeURIComponent(document.getElementById('text2').value);
 
         try {
+            // Send POST request to check if the texts are anagrams
             const response = await fetch(`/api/anagram/check?text1=${text1}&text2=${text2}`, {
                 method: 'POST'
             });
 
+            // Parse the JSON response
             const isAnagram = await response.json();
+            // Display the result
             document.getElementById('result').innerText = isAnagram ? 'The texts are anagrams!' : 'The texts are not anagrams.';
         } catch (error) {
             console.error('Error:', error);
@@ -61,18 +72,25 @@
         }
     }
 
+    /**
+     * Function to find all anagrams from a list of candidate words.
+     * Makes a POST request to the /api/anagram/findAll endpoint.
+     */
     async function findAnagrams() {
         const text = encodeURIComponent(document.getElementById('text').value);
         const candidates = document.getElementById('candidates').value.split(',').map(candidate => candidate.trim());
 
         try {
+            // Send POST request to find all anagrams
             const response = await fetch(`/api/anagram/findAll?text=${text}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(candidates)
             });
 
+            // Parse the JSON response
             const anagrams = await response.json();
+            // Display the results
             document.getElementById('anagram-results').innerText = anagrams.length ? `Anagrams found: ${anagrams.join(', ')}` : 'No anagrams found.';
         } catch (error) {
             console.error('Error:', error);

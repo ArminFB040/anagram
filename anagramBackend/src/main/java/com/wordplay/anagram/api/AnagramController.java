@@ -9,7 +9,6 @@ public class AnagramController {
 
     private final AnagramService anagramService;
 
-    // Konstruktor-Injektion
     public AnagramController(AnagramService anagramService) {
         this.anagramService = anagramService;
     }
