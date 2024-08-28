@@ -18,3 +18,45 @@
 /.idea/sonarlint/securityhotspotstore/a/c/ac9963675986f82adbc638c938cbc927c924519e
 /.idea/sonarlint/issuestore/d/1/d1b2ba401f0e90f6f5e7e25a4b6f7258305813c8
 /.idea/sonarlint/securityhotspotstore/d/1/d1b2ba401f0e90f6f5e7e25a4b6f7258305813c8
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
