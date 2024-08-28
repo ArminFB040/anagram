@@ -1,0 +1,23 @@
+<div>
+  <h1>Anagram Checker</h1>
+
+  <div>
+    <h2>Check if two texts are anagrams</h2>
+    <input [(ngModel)]="text1" placeholder="Enter first text" />
+    <input [(ngModel)]="text2" placeholder="Enter second text" />
+    <button (click)="checkAnagrams()">Check</button>
+    <p *ngIf="result !== null">
+      The texts are{{ result ? '' : ' not' }} anagrams.
+    </p>
+  </div>
+
+  <div>
+    <h2>Find anagrams in a list</h2>
+    <input [(ngModel)]="candidateText" placeholder="Enter text to find anagrams for" />
+    <textarea [(ngModel)]="candidates" placeholder="Enter list of candidates, one per line" rows="5"></textarea>
+    <button (click)="findAnagrams()">Find Anagrams</button>
+    <ul *ngIf="foundAnagrams.length > 0">
+      <li *ngFor="let anagram of foundAnagrams">{{ anagram }}</li>
+    </ul>
+  </div>
+</div>
